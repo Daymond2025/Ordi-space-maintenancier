@@ -26,6 +26,7 @@ import {
 /** Sous le titre : "Nouvelle demande" en texte, puis une pastille de statut une fois le rendez-vous traité. */
 const PASTILLES_STATUT: Record<Exclude<StatutAffiche, "demande">, { label: string; classe: string }> = {
   confirme: { label: "Confirmé", classe: "bg-[#E4F8EA] text-[#12963F]" },
+  en_cours: { label: "En cours", classe: "bg-[#E3EEFF] text-[#0866FF]" },
   reporte: { label: "Reporté", classe: "bg-[#FFF1DC] text-[#E58A00]" },
   refuse: { label: "Refusé", classe: "bg-[#FFE4E9] text-[#D3102F]" },
   termine: { label: "Terminée", classe: "bg-[#EDEDED] text-[#2B2B2B]" },

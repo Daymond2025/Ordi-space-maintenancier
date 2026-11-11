@@ -64,7 +64,7 @@ export type StatutIntervention = "planifiee" | "en_cours" | "terminee" | "annule
 /** rendez_vous.statut_rdv — badges de l'accueil (Demande / Confirmé / Reporter / Refusé / Terminée). */
 export type StatutRdv = "demande" | "confirme" | "reporte" | "refuse" | "termine";
 /** Statut affiché : celui du rendez-vous, plus "annule" (dérivé d'une intervention annulée, pas stocké sur le rendez-vous). */
-export type StatutAffiche = StatutRdv | "annule";
+export type StatutAffiche = StatutRdv | "en_cours" | "annule";
 export type NiveauGravite = "faible" | "moyenne" | "critique";
 
 export type ClientResume = {

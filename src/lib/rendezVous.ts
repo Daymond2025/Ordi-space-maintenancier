@@ -27,7 +27,8 @@ export function dernierRendezVous(demande: DemandeSav): RendezVous | null {
 /**
  * Le dernier rendez-vous donne le statut et la date ; sans rendez-vous,
  * c'est une "Demande" datée de sa déclaration. Une intervention annulée
- * prime sur tout ; sinon une demande résolue/clôturée est "Terminée".
+ * prime sur tout ; sinon une demande résolue/clôturée est "Terminée", et
+ * une intervention démarrée (demande en_cours) est "En cours".
  */
 export function statutEtDate(demande: DemandeSav): { statut: StatutAffiche; date: Date; rdv: RendezVous | null } {
   const rdv = dernierRendezVous(demande);
@@ -36,7 +37,7 @@ export function statutEtDate(demande: DemandeSav): { statut: StatutAffiche; date
 
   return {
     rdv,
-    statut: annulee ? "annule" : terminee ? "termine" : (rdv?.statut_rdv ?? "demande"),
+    statut: annulee ? "annule" : terminee ? "termine" : demande.statut_demande === "en_cours" ? "en_cours" : (rdv?.statut_rdv ?? "demande"),
     date: versDate(rdv?.date_rdv ?? demande.date_demande),
   };
 }

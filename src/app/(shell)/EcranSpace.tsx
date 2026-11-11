@@ -39,6 +39,7 @@ const ONGLETS: { id: Onglet; label: string }[] = [
 const BADGES: Record<StatutAffiche, { label: string; style: React.CSSProperties }> = {
   demande: { label: "Demande", style: { border: "1.5px solid #FFFFFF" } },
   confirme: { label: "Confirmé", style: { background: "linear-gradient(90deg, #0B8F3A 0%, #35C55B 100%)" } },
+  en_cours: { label: "En cours", style: { background: "linear-gradient(90deg, #0866FF 0%, #00B4FF 100%)" } },
   reporte: { label: "Reporter", style: { background: "linear-gradient(90deg, #FF7A00 0%, #FFC400 100%)" } },
   refuse: { label: "Refusé", style: { background: "linear-gradient(90deg, #A3102E 0%, #FF2A4F 100%)" } },
   termine: { label: "Terminée", style: { background: "linear-gradient(90deg, #101010 0%, #C2C2C2 100%)" } },
@@ -46,7 +47,7 @@ const BADGES: Record<StatutAffiche, { label: string; style: React.CSSProperties 
 };
 
 /** Ordre d'affichage : ce qui demande une action du technicien d'abord. */
-const PRIORITE: Record<StatutAffiche, number> = { demande: 0, confirme: 1, reporte: 2, refuse: 3, annule: 4, termine: 5 };
+const PRIORITE: Record<StatutAffiche, number> = { demande: 0, en_cours: 1, confirme: 2, reporte: 3, refuse: 4, annule: 5, termine: 6 };
 
 type CarteRdv = {
   demande: DemandeSav;
