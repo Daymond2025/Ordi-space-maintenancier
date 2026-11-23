@@ -204,6 +204,9 @@ export function EcranPortefeuille() {
 
   return (
     <div className="flex h-full flex-col overflow-y-auto bg-[#F7F8FF]">
+      {/* Fond blanc dès le haut de l'écran : le header (coins arrondis) est
+          posé dessus, sans bande grise entre le header et le fond blanc. */}
+      <div className="shrink-0 bg-white">
       <div className="shrink-0 rounded-b-[30px] px-[18px] pb-5 pt-[26px]" style={{ background: DEGRADE_BLEU }}>
         <div className="flex items-center gap-3">
           <button
@@ -237,7 +240,7 @@ export function EcranPortefeuille() {
         </div>
       </div>
 
-      <div className="flex shrink-0 border-b border-[#D9DEE8] bg-white">
+      <div className="flex shrink-0 bg-white">
         {ONGLETS.map((o) => {
           const actif = onglet === o.id;
           return (
@@ -253,6 +256,10 @@ export function EcranPortefeuille() {
           );
         })}
       </div>
+      </div>
+
+      {/* Ligne de séparation sur toute la largeur de l'écran. */}
+      <div className="h-px w-full shrink-0 bg-brand-line" />
 
       <div className="flex shrink-0 flex-col gap-3 px-4 pb-8 pt-4">
         {message ? <p className="rounded-xl bg-[#E8F0FE] px-3 py-2 text-xs font-semibold text-[#2563EB]">{message}</p> : null}

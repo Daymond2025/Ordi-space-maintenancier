@@ -107,8 +107,7 @@ export function EcranVentes() {
       </div>
 
       <div
-        className={`relative z-10 shrink-0 rounded-b-[20px] bg-white px-3 pt-3 ${onglet === "ventes" ? "pb-3.5" : "pb-5"}`}
-        style={{ boxShadow: "0px 2px 3px 0px rgba(0, 0, 0, 0.16)" }}
+        className={`relative z-10 shrink-0 bg-white px-3 pt-3 ${onglet === "ventes" ? "pb-3.5" : "pb-5"}`}
       >
         <div className="flex h-[34px] rounded-full border border-[#E3E8F1] bg-[#F2F5FA] p-[3px]">
           {ONGLETS.map((o) => (
@@ -148,8 +147,12 @@ export function EcranVentes() {
         ) : null}
       </div>
 
+      {/* Ligne de séparation sur toute la largeur de l'écran (fond blanc net
+          au lieu de la bande arrondie avec ombre). */}
+      <div className="h-px w-full shrink-0 bg-brand-line" />
+
       {onglet === "ventes" ? (
-        <div className="flex shrink-0 flex-col gap-4 px-3.5 pb-6 pt-10">
+        <div className="flex shrink-0 flex-col gap-4 px-3.5 pb-6 pt-5">
           {ventes.map((vente) => (
             <CarteVente key={vente.id} vente={vente} />
           ))}

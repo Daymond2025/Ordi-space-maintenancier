@@ -74,7 +74,7 @@ export function EcranInterventions() {
         </div>
       </div>
 
-      <div className="flex gap-[14px] bg-white px-[17px] py-[10px]" style={{ boxShadow: "0px 4px 10px rgba(16, 24, 40, 0.06)" }}>
+      <div className="flex gap-[14px] bg-white px-[17px] py-[10px]">
         {ONGLETS.map((o) => (
           <button
             key={o.id}
@@ -87,6 +87,9 @@ export function EcranInterventions() {
           </button>
         ))}
       </div>
+
+      {/* Ligne de séparation sur toute la largeur de l'écran. */}
+      <div className="h-px w-full shrink-0 bg-brand-line" />
 
       <div className="flex flex-1 flex-col gap-[20px] px-[17px] pb-6 pt-[22px]">
         {filtrees === null ? (
