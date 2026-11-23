@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotifications } from "@/components/notifications/Notifications";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -102,6 +103,7 @@ function DetailNotification({ notification, onFermer }: { notification: Notifica
 export function EcranNotifications() {
   const { token } = useAuth();
   const router = useRouter();
+  const { version, marquerLue } = useNotifications();
   const [notifications, setNotifications] = useState<NotificationUtilisateur[] | null>(null);
   const [ouverte, setOuverte] = useState<NotificationUtilisateur | null>(null);
 
@@ -112,23 +114,24 @@ export function EcranNotifications() {
       .catch(() => {});
   }
 
-  useEffect(recharger, [token]);
+  useEffect(recharger, [token, version]);
   useRefetchOnFocus(recharger);
 
   async function onMarquerLue(id: number) {
     setNotifications((liste) => liste?.map((n) => (n.id === id ? { ...n, lu: true } : n)) ?? liste);
-    if (!token) return;
-    try {
-      await apiFetch(`/moi/notifications/${id}/lue`, { method: "PATCH", token });
-    } catch {
-      setNotifications((liste) => liste?.map((n) => (n.id === id ? { ...n, lu: false } : n)) ?? liste);
-    }
+    await marquerLue(id).catch(() => {});
   }
 
   /** Ouvre le détail et, si elle était non lue, la marque comme lue. */
   function onOuvrir(notification: NotificationUtilisateur) {
-    setOuverte({ ...notification, lu: true });
     if (!notification.lu) void onMarquerLue(notification.id);
+    // Notification liée à un écran (mission, rendez-vous…) : on l'ouvre directement.
+    const lien = (notification as { lien?: string | null }).lien;
+    if (lien) {
+      router.push(lien);
+      return;
+    }
+    setOuverte({ ...notification, lu: true });
   }
 
   const nonLues = notifications?.filter((n) => !n.lu) ?? [];

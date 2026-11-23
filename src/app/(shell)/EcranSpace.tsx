@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotifications } from "@/components/notifications/Notifications";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -180,7 +181,8 @@ export function EcranSpace() {
   const router = useRouter();
   const [demandes, setDemandes] = useState<DemandeSav[] | null>(null);
   const [profil, setProfil] = useState<ProfilTechnicien | null>(null);
-  const [notificationsNonLues, setNotificationsNonLues] = useState(false);
+  const { nonLues, version } = useNotifications();
+  const notificationsNonLues = nonLues > 0;
   const [onglet, setOnglet] = useState<Onglet>("tous");
   const [chargementDispo, setChargementDispo] = useState(false);
 
@@ -190,10 +192,12 @@ export function EcranSpace() {
       .then((page) => setDemandes(page.data))
       .catch(() => setDemandes((d) => d ?? []));
     apiFetch<ProfilTechnicien>("/moi/profil", { token }).then(setProfil).catch(() => {});
-    apiFetch<Pagination<{ lu: boolean }>>("/moi/notifications", { token })
-      .then((page) => setNotificationsNonLues(page.data.some((n) => !n.lu)))
-      .catch(() => {});
   }, [token]);
+
+  // Nouvelle notification (demande SAV…) : la liste se met à jour d'elle-même.
+  useEffect(() => {
+    if (version > 0) charger();
+  }, [version, charger]);
 
   useEffect(charger, [charger]);
 
