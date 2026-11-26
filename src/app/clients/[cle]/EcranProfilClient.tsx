@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
@@ -10,11 +9,13 @@ import { CarteIntervention } from "@/components/interventions/CarteIntervention"
 import { CarteAppareilClient, fichesClients, lienIntervention } from "@/components/interventions/clients";
 import { useRefetchOnFocus } from "@/lib/useRefetchOnFocus";
 import { DEGRADE_HEADER } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 /** "Profil clients" — un client et son appareil, avec l'historique de ses interventions. */
 export function EcranProfilClient({ cle }: { cle: string }) {
   const { token } = useAuth();
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/clients");
   const [demandes, setDemandes] = useState<DemandeSav[] | null>(null);
 
   const charger = useCallback(() => {
@@ -43,7 +44,7 @@ export function EcranProfilClient({ cle }: { cle: string }) {
         <div className="flex items-center gap-[16px]">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
           >

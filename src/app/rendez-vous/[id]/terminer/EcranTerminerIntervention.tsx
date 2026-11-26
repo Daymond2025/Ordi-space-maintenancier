@@ -10,6 +10,7 @@ import { CarteIntervention } from "@/components/interventions/CarteIntervention"
 import { PIECES, PRESTATIONS } from "@/components/interventions/prestations";
 import { SelectionMultiple } from "@/components/interventions/SelectionMultiple";
 import { DEGRADE_HEADER, DUREES_INTERVENTION, statutEtDate } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 const OMBRE_CARTE = "0px 6px 20px rgba(16, 24, 40, 0.08)";
 const DEGRADE_VERT = "linear-gradient(90deg, #068A2D 0%, #2FE65B 100%)";
@@ -38,6 +39,8 @@ function maintenant(): { date: string; heure: string } {
 export function EcranTerminerIntervention({ demandeSavId }: { demandeSavId: number }) {
   const { token } = useAuth();
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/rendez-vous/[id]");
   const [demande, setDemande] = useState<DemandeSav | null>(null);
   const [erreurChargement, setErreurChargement] = useState(false);
   const [prestations, setPrestations] = useState<string[]>([]);
@@ -116,7 +119,7 @@ export function EcranTerminerIntervention({ demandeSavId }: { demandeSavId: numb
           <div className="flex items-start gap-[14px]">
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={retour}
               aria-label="Retour"
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
             >

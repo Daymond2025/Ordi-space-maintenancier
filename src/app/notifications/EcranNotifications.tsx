@@ -8,6 +8,7 @@ import { apiFetch } from "@/lib/api";
 import { formaterDateHeure, formaterDateRelative, type NotificationUtilisateur, type Pagination } from "@/lib/types";
 import { BellIcon, BoxIcon, ChevronLeftIcon, CheckCircleIcon, CloseIcon } from "@/components/icons";
 import { useRefetchOnFocus } from "@/lib/useRefetchOnFocus";
+import { useRetour } from "@/lib/navigation";
 
 const DEGRADE_HEADER = "linear-gradient(90deg, #0077FF 0%, #00BFFF 100%)";
 
@@ -103,6 +104,8 @@ function DetailNotification({ notification, onFermer }: { notification: Notifica
 export function EcranNotifications() {
   const { token } = useAuth();
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/");
   const { version, marquerLue } = useNotifications();
   const [notifications, setNotifications] = useState<NotificationUtilisateur[] | null>(null);
   const [ouverte, setOuverte] = useState<NotificationUtilisateur | null>(null);
@@ -143,7 +146,7 @@ export function EcranNotifications() {
         <div className="flex items-center gap-3 px-4">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 text-white"
           >

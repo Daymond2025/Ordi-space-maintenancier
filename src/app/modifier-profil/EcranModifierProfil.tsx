@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch, ApiRequestError } from "@/lib/api";
 import type { ProfilTechnicien } from "@/lib/types";
 import { ChampAuth } from "@/components/auth/ChampAuth";
 import { ChevronLeftIcon, CheckCircleIcon } from "@/components/icons";
+import { useRetour } from "@/lib/navigation";
 
 /**
  * "Modifier mon profil" — branché sur PATCH /moi/profil (générique à tous
@@ -16,7 +16,8 @@ import { ChevronLeftIcon, CheckCircleIcon } from "@/components/icons";
  */
 export function EcranModifierProfil() {
   const { token } = useAuth();
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/compte");
 
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
@@ -75,7 +76,7 @@ export function EcranModifierProfil() {
       <div className="flex items-center gap-3 bg-white px-4 py-4">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={retour}
           aria-label="Retour"
           className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f2f5fa] text-brand-ink"
         >

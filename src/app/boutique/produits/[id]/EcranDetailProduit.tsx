@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ComponentType, SVGProps } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -27,6 +26,7 @@ import { FormulaireCommandeLivreur } from "@/components/boutique/FormulaireComma
 import { PopupLienAffilie } from "@/components/boutique/PopupLienAffilie";
 import { VisionneuseImages } from "@/components/boutique/VisionneuseImages";
 import { CarteFournisseur } from "@/components/compte/CarteFournisseur";
+import { useRetour } from "@/lib/navigation";
 
 const ONGLETS = [
   { id: "cadeaux", label: "Les cadeaux" },
@@ -51,7 +51,8 @@ const OMBRE_CARTE = "0px 1px 2px 0px rgba(0, 0, 0, 0.05)";
  *   livreur à joindre et trouver le fournisseur du produit.
  */
 export function EcranDetailProduit({ produitBoutiqueId }: { produitBoutiqueId: number }) {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique");
   const { token } = useAuth();
   const [produit, setProduit] = useState<ProduitBoutique | null>(null);
   const [imageActive, setImageActive] = useState(0);
@@ -164,7 +165,7 @@ export function EcranDetailProduit({ produitBoutiqueId }: { produitBoutiqueId: n
       <div className="flex shrink-0 items-center justify-between bg-white px-4 py-3">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={retour}
           aria-label="Retour"
           className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#F2F5FA] text-brand-ink"
         >

@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { DemandeSav, Intervention } from "@/lib/types";
 import { CalendrierIcon, ChevronLeftIcon, HorlogeIcon } from "@/components/icons";
 import { CarteIntervention } from "@/components/interventions/CarteIntervention";
 import { Carte, CarteCoordonneesClient, CarteDateRendezVous, CarteMotif, OMBRE_CARTE, Puces, RecapDiagnostic } from "@/components/interventions/blocs";
 import { DEGRADE_BLEU, DEGRADE_HEADER, MOIS_COURTS, heure, jourDeuxChiffres, libelleDuree, versDate } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 type Onglet = "intervention" | "diagnostic" | "rdv";
 
@@ -56,7 +56,8 @@ function duree(intervention: Intervention): string {
  * fin d'intervention, diagnostic, rendez-vous. Lecture seule.
  */
 export function VueInterventionTerminee({ demande, intervention }: { demande: DemandeSav; intervention: Intervention }) {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/rendez-vous/[id]");
   const [onglet, setOnglet] = useState<Onglet>("intervention");
 
   return (
@@ -65,7 +66,7 @@ export function VueInterventionTerminee({ demande, intervention }: { demande: De
         <div className="flex items-start gap-[11px]">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
           >

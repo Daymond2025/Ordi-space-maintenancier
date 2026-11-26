@@ -10,6 +10,7 @@ import { formaterMontantPoints } from "@/lib/ventesBoutique";
 import { categorieBoutique, type ProduitBoutique } from "@/lib/produitsBoutique";
 import { BellIcon, ChevronLeftIcon, ChevronRightIcon, WalletIcon } from "@/components/icons";
 import { GrilleProduitsBoutique } from "@/components/boutique/GrilleProduitsBoutique";
+import { useRetour } from "@/lib/navigation";
 
 const DEGRADE_HEADER = "linear-gradient(90deg, #0077FF 0%, #00BFFF 100%)";
 
@@ -33,6 +34,8 @@ const CATEGORIES = [
  */
 export function EcranBoutique() {
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/");
   const { token } = useAuth();
   const [categorie, setCategorie] = useState<(typeof CATEGORIES)[number]["id"]>("tout");
   const [produits, setProduits] = useState<ProduitBoutique[] | null>(null);
@@ -66,7 +69,7 @@ export function EcranBoutique() {
         <div className="flex items-center justify-between px-4">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 text-white"
           >

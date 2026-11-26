@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
@@ -9,11 +8,13 @@ import { ChevronLeftIcon } from "@/components/icons";
 import { CarteAppareilClient, fichesClients } from "@/components/interventions/clients";
 import { useRefetchOnFocus } from "@/lib/useRefetchOnFocus";
 import { DEGRADE_HEADER } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 /** "Mes clients" (menu Compte) — clients et appareils pris en charge par le technicien. */
 export function EcranMesClients() {
   const { token } = useAuth();
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/compte");
   const [demandes, setDemandes] = useState<DemandeSav[] | null>(null);
 
   const charger = useCallback(() => {
@@ -34,7 +35,7 @@ export function EcranMesClients() {
       <div className="flex items-center gap-[14px] px-[14px] pb-[20px] pt-[16px]" style={{ background: DEGRADE_HEADER }}>
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={retour}
           aria-label="Retour"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
         >

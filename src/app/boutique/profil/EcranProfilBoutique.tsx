@@ -15,6 +15,7 @@ import { CarteCoordinateur } from "@/components/compte/CarteCoordinateur";
 import { CarteFournisseur } from "@/components/compte/CarteFournisseur";
 import { CarteConfidentialite, CarteSupportWhatsApp } from "@/components/compte/CartesAide";
 import { DEGRADE_BLEU } from "@/components/boutique/style";
+import { useRetour } from "@/lib/navigation";
 
 const OMBRE_CARTE = "0px 2px 6px 0px rgba(0, 0, 0, 0.12)";
 const DEGRADE_ORANGE = "linear-gradient(90deg, #FF7A00 0%, #FFB800 100%)";
@@ -85,6 +86,8 @@ function phraseCommission(min: number | null, max: number | null): ReactNode {
  */
 export function EcranProfilBoutique() {
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique");
   const { token } = useAuth();
   const [profil, setProfil] = useState<ProfilBoutique | null>(null);
   const [support, setSupport] = useState<SupportOrdiSpace | null>(null);
@@ -196,7 +199,7 @@ export function EcranProfilBoutique() {
       <div className="relative h-[174px] shrink-0 rounded-b-[40px]" style={{ background: DEGRADE_BLEU }}>
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={retour}
           aria-label="Retour"
           className="absolute left-[15px] top-[27px] flex h-[30px] w-8 items-center justify-center rounded-lg bg-white/25 text-white"
         >

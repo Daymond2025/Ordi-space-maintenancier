@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch, ApiRequestError } from "@/lib/api";
@@ -22,6 +21,7 @@ import {
   statutEtDate,
   versDate,
 } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 /** Sous le titre : "Nouvelle demande" en texte, puis une pastille de statut une fois le rendez-vous traité. */
 const PASTILLES_STATUT: Record<Exclude<StatutAffiche, "demande">, { label: string; classe: string }> = {
@@ -111,7 +111,8 @@ function FeuilleDate({
  */
 export function EcranRendezVous({ demandeSavId }: { demandeSavId: number }) {
   const { token } = useAuth();
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/");
   const [demande, setDemande] = useState<DemandeSav | null>(null);
   const [erreurChargement, setErreurChargement] = useState(false);
   const [feuille, setFeuille] = useState<"accepter" | "reporter" | null>(null);
@@ -181,7 +182,7 @@ export function EcranRendezVous({ demandeSavId }: { demandeSavId: number }) {
             <div className="flex items-start gap-[18px]">
               <button
                 type="button"
-                onClick={() => router.back()}
+                onClick={retour}
                 aria-label="Retour"
                 className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-white/25 text-white"
               >

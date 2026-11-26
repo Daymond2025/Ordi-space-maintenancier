@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { ApiRequestError, apiFetch } from "@/lib/api";
@@ -20,6 +19,7 @@ import {
 import { ChevronLeftIcon, LongArrowRightIcon, WalletIcon } from "@/components/icons";
 import { FeuilleRetrait } from "@/components/boutique/FeuilleRetrait";
 import { DEGRADE_BLEU } from "@/components/boutique/style";
+import { useRetour } from "@/lib/navigation";
 
 const ONGLETS = [
   { id: "commissions", label: "Mes commissions" },
@@ -133,7 +133,8 @@ function LigneRetrait({ retrait, onAnnuler, annulation }: { retrait: RetraitComm
  * PortefeuilleController et Admin\RetraitController côté backend.
  */
 export function EcranPortefeuille() {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique");
   const { token } = useAuth();
   const [resume, setResume] = useState<ResumePortefeuille | null>(null);
   const [commissions, setCommissions] = useState<CommissionPortefeuille[] | null>(null);
@@ -211,7 +212,7 @@ export function EcranPortefeuille() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/25 text-white"
           >

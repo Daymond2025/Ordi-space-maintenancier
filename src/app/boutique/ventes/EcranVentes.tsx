@@ -9,6 +9,7 @@ import { ChevronLeftIcon } from "@/components/icons";
 import { CarteLien } from "@/components/boutique/CarteLien";
 import { CarteVente } from "@/components/boutique/CarteVente";
 import { DEGRADE_BLEU } from "@/components/boutique/style";
+import { useRetour } from "@/lib/navigation";
 
 const ONGLETS = [
   { id: "ventes", label: "Les ventes" },
@@ -33,6 +34,8 @@ const FILTRES: { id: "tout" | StatutVente; label: string }[] = [
  */
 export function EcranVentes() {
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique");
   const { token } = useAuth();
   const [reponse, setReponse] = useState<ReponseVentes | null>(null);
   const [erreur, setErreur] = useState(false);
@@ -90,7 +93,7 @@ export function EcranVentes() {
         <div className="flex items-center gap-3 px-3.5 pb-3 pt-3.5">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-[30px] w-8 shrink-0 items-center justify-center rounded-lg bg-white/25 text-white"
           >

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
@@ -10,6 +9,7 @@ import { CarteLien } from "@/components/boutique/CarteLien";
 import { CarteVente } from "@/components/boutique/CarteVente";
 import { PopupLienAffilie } from "@/components/boutique/PopupLienAffilie";
 import { DEGRADE_BLEU } from "@/components/boutique/style";
+import { useRetour } from "@/lib/navigation";
 
 /**
  * "Vente par lien" (détail) — ouvert en tapant un lien dans l'onglet "Vente
@@ -19,7 +19,8 @@ import { DEGRADE_BLEU } from "@/components/boutique/style";
  * Partager en repli sur navigateur de bureau).
  */
 export function EcranLienVente({ lienId }: { lienId: number }) {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique/ventes");
   const { token } = useAuth();
   const [reponse, setReponse] = useState<ReponseLien | null>(null);
   const [erreur, setErreur] = useState(false);
@@ -64,7 +65,7 @@ export function EcranLienVente({ lienId }: { lienId: number }) {
         <div className="flex items-start gap-3.5 rounded-b-[32px] px-[18px] pb-[49px] pt-[19px]" style={{ background: DEGRADE_BLEU }}>
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/25 text-white"
           >

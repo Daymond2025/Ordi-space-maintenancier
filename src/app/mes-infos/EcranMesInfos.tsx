@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ComponentType, SVGProps } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -10,6 +9,7 @@ import { ChevronLeftIcon, DeconnexionIcon, EngrenageIcon, PhoneFilledIcon, PlusV
 import { CarteCoordinateur } from "@/components/compte/CarteCoordinateur";
 import { CarteSupportWhatsApp } from "@/components/compte/CartesAide";
 import { DEGRADE_BLEU } from "@/components/boutique/style";
+import { useRetour } from "@/lib/navigation";
 
 const OMBRE_LIGNE = "0px 6px 16px 0px rgba(0, 119, 255, 0.1)";
 
@@ -47,7 +47,8 @@ function membreDepuis(createdAtIso: string): string {
  * qu'il n'est pas réglé). Le menu "⋮" n'a pas encore d'action.
  */
 export function EcranMesInfos() {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/compte");
   const { token, logout } = useAuth();
   const [profil, setProfil] = useState<ProfilTechnicien | null>(null);
   const [support, setSupport] = useState<SupportOrdiSpace | null>(null);
@@ -85,7 +86,7 @@ export function EcranMesInfos() {
         <div className="absolute inset-x-0 top-0 flex h-[70px] items-center gap-3 bg-white/20 px-[7px]">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour"
             className="flex h-[30px] w-8 shrink-0 items-center justify-center rounded-lg bg-white/25 text-white"
           >

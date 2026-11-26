@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
@@ -9,6 +9,7 @@ import type { ProduitBoutique } from "@/lib/produitsBoutique";
 import { FAMILLES, compterFiltres, lireFiltres, versParametresApi } from "@/lib/filtresCatalogue";
 import { ChevronLeftIcon } from "@/components/icons";
 import { GrilleProduitsBoutique } from "@/components/boutique/GrilleProduitsBoutique";
+import { useRetour } from "@/lib/navigation";
 
 const DEGRADE_HEADER = "linear-gradient(90deg, #0077FF 0%, #00BFFF 100%)";
 
@@ -18,7 +19,8 @@ const DEGRADE_HEADER = "linear-gradient(90deg, #0077FF 0%, #00BFFF 100%)";
  * ramène à l'écran Filtres, sélection conservée (elle est dans l'URL).
  */
 export function EcranResultats() {
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/boutique");
   const recherche = useSearchParams();
   const { token } = useAuth();
   const chaine = recherche.toString();
@@ -50,7 +52,7 @@ export function EcranResultats() {
         <div className="flex items-center justify-between">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={retour}
             aria-label="Retour aux filtres"
             className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 text-white"
           >
@@ -73,7 +75,7 @@ export function EcranResultats() {
       ) : produits.length === 0 ? (
         <div className="flex flex-col items-center gap-4 px-8 py-12 text-center">
           <p className="text-sm text-brand-muted">Aucun produit à revendre ne correspond à ces filtres.</p>
-          <button type="button" onClick={() => router.back()} className="h-11 rounded-xl px-6 text-sm font-extrabold text-white" style={{ background: "#FF6B0B" }}>
+          <button type="button" onClick={retour} className="h-11 rounded-xl px-6 text-sm font-extrabold text-white" style={{ background: "#FF6B0B" }}>
             Modifier les filtres
           </button>
         </div>

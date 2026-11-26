@@ -9,6 +9,7 @@ import type { DemandeSav, NiveauGravite } from "@/lib/types";
 import { ChevronDownIcon, ChevronLeftIcon } from "@/components/icons";
 import { SelectionMultiple } from "@/components/interventions/SelectionMultiple";
 import { DEGRADE_BLEU, DEGRADE_HEADER, DUREES_INTERVENTION, SERVICES_COURTS, achete, illustration, nomClient, statutEtDate } from "@/lib/rendezVous";
+import { useRetour } from "@/lib/navigation";
 
 const PROBLEMES = [
   "Ne s'allume pas / écran noir",
@@ -50,6 +51,8 @@ function Carte({ titre, children }: { titre: string; children: React.ReactNode }
 export function EcranDiagnostic({ demandeSavId }: { demandeSavId: number }) {
   const { token } = useAuth();
   const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/rendez-vous/[id]");
   const [demande, setDemande] = useState<DemandeSav | null>(null);
   const [erreurChargement, setErreurChargement] = useState(false);
   const [problemes, setProblemes] = useState<string[]>([]);
@@ -138,7 +141,7 @@ export function EcranDiagnostic({ demandeSavId }: { demandeSavId: number }) {
           <div className="flex items-start gap-[14px]">
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={retour}
               aria-label="Retour"
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
             >

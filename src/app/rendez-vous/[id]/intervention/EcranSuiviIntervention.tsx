@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch, ApiRequestError } from "@/lib/api";
@@ -12,6 +11,7 @@ import { RecapDiagnostic } from "@/components/interventions/blocs";
 import { useRefetchOnFocus } from "@/lib/useRefetchOnFocus";
 import { DEGRADE_BLEU, DEGRADE_HEADER, statutEtDate } from "@/lib/rendezVous";
 import { VueInterventionTerminee } from "./VueInterventionTerminee";
+import { useRetour } from "@/lib/navigation";
 
 const DEGRADE_VERT = "linear-gradient(90deg, #068A2D 0%, #2FE65B 100%)";
 
@@ -22,7 +22,8 @@ const DEGRADE_VERT = "linear-gradient(90deg, #068A2D 0%, #2FE65B 100%)";
  */
 export function EcranSuiviIntervention({ demandeSavId }: { demandeSavId: number }) {
   const { token } = useAuth();
-  const router = useRouter();
+  // Retour fiable même si la page a été ouverte directement (notification, lien, appli rouverte) — voir lib/navigation.ts.
+  const retour = useRetour("/rendez-vous/[id]");
   const [demande, setDemande] = useState<DemandeSav | null>(null);
   const [erreurChargement, setErreurChargement] = useState(false);
   const [chargement, setChargement] = useState(false);
@@ -85,7 +86,7 @@ export function EcranSuiviIntervention({ demandeSavId }: { demandeSavId: number 
           <div className="flex items-start gap-[14px]">
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={retour}
               aria-label="Retour"
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-white/25 text-white"
             >
