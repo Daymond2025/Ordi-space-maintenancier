@@ -47,7 +47,7 @@ export const THEME_AUTH: ThemeAuth = {
   "accentOmbre": "rgba(8,145,178,0.38)",
   "decor": "engrenages",
   "posture": "flotte",
-  "accessoire": "engrenage",
+  "accessoire": "aucun",
   "confettis": [
     "#0891b2",
     "#22d3ee",
